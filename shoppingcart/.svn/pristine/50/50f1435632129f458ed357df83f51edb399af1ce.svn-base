@@ -1,0 +1,63 @@
+// Finish and comment me!
+
+package model;
+
+import java.math.BigDecimal;
+
+/**
+ * Class that stores the information of purchased items.
+ * @author Jasmine D
+ * @version 4/10/16
+ */
+public final class ItemOrder {
+    
+    /** Item Object. */
+    private final Item myItem;
+    
+    /** Number of an Item bought. */
+    private final int myQuantity;
+
+    /**
+     * Initializes an item order of a given quantity.
+     * @param theItem Item object
+     * @param theQuantity number of an Item bought
+     */
+    public ItemOrder(final Item theItem, final int theQuantity) {
+        myItem = theItem;
+        myQuantity = theQuantity;
+    }
+
+    /**
+     * Returns the cost of the item.
+     * @return cost of the item.
+     */
+    public BigDecimal calculateOrderTotal() {
+        return null;
+    }
+
+    /**
+     * Returns a reference to the Item in this ItemOrder. 
+     * @return a reference to the Item in this ItemOrder. 
+     */
+    public Item getItem() {
+        
+        return null;
+    }
+    
+    /**
+     * Returns the quantity for this ItemOrder.
+     * @return the quantity for this ItemOrder.
+     */
+    public int getQuantity() {
+        
+        return 0;
+    }
+
+
+    @Override
+    public String toString() {
+
+        return null;
+    }
+
+}

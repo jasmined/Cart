@@ -1,0 +1,78 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import model.Item;
+
+public class ItemTest {
+    
+    private Item item;
+    
+    /**
+     * Creates an Item object for the test methods.
+     * @throws Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        item = ("Silly Putty", 4.41);
+        
+    }
+
+    @Test
+    public void testHashCode() {
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testItemStringBigDecimal() {
+        fail("Not yet implemented");
+    }
+
+    
+    /**
+     * Test method for obtaining the name.
+     */
+    @Test
+    public void testGetName() {
+        assertEquals("Silly Putty", item.getName());
+    }
+    
+    /**
+     * Test method for obtaining the price.
+     */
+    @Test
+    public void testGetPrice() {
+        assertEquals(4.41, item.getPrice());
+    }
+
+    @Test
+    public void testCalculateItemTotal() {
+        fail("Not yet implemented");
+    }
+    
+    /**
+     * Test method for checking if the item is bulk.
+     */
+    @Test
+    public void testIsBulk() {
+        fail("Not yet implemented");
+    }
+    
+    /**
+     * Test method for the String representation 
+     * of the Item object.
+     */
+    @Test
+    public void testToString() {
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void testEqualsObject() {
+        fail("Not yet implemented");
+    }
+
+}

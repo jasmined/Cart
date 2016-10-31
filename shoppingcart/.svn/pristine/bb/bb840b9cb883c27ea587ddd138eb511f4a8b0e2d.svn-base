@@ -1,0 +1,88 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+// import java.text.NumberFormat;
+import model.Item;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Test class for Item.
+ * @author Jasmine Dacones
+ * @version 4/11/16
+ */
+public class ItemTest {
+    
+    /** Item object name. */
+    private Item myItem;
+    
+    /** Item object 2 name. */
+    private Item myItem2;
+    
+    /** New BigDecimal. */
+    private BigDecimal myBd;
+    
+    /**
+     * Creates an Item object for the test methods.
+     */
+    @Before
+    public void setUp() {
+        myItem = new Item("Silly Putty", new BigDecimal(4.41));
+        myItem2 = new Item("Silly Putty", new BigDecimal(4.41), 6, new BigDecimal(10.04));
+    }
+
+    
+    /**
+     * Test method for obtaining the name.
+     */
+    @Test
+    public void testGetName() {
+        assertEquals("Silly Putty", myItem.getName());
+    }
+    
+    /**
+     * Test method for obtaining the price.
+     */
+    @Test
+    public void testGetPrice() {
+        assertEquals(new BigDecimal(4.41), myItem.getPrice());
+    }
+    
+    /**
+     * Test method for calculating the total price of the items.
+     */
+//    @Test
+//    public void testCalculateItemTotal() {
+//        fail("Not yet implemented");
+//    }
+    
+//    /**
+//     * Test method for checking if the item is bulk.
+//     */
+//    @Test
+//    public void testIsBulk() {
+//        fail("Not yet implemented");
+//    }
+    
+//    /**
+//     * Test method for the String representation 
+//     * of the Item object.
+//     */
+//    @Test
+//    public void testToString() {
+//        fail("Not yet implemented");
+//    }
+
+//    @Test
+//    public void testEqualsObject() {
+//        assertEquals(new Item("Silly Putty", new BigDecimal(4.41)), myItem);
+//    }
+    
+//  @Test
+//  public void testHashCode() {
+//      fail("Not yet implemented");
+//  }
+
+}

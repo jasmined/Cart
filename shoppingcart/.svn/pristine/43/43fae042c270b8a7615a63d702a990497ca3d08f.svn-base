@@ -1,0 +1,133 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import java.math.BigDecimal;
+// import java.text.NumberFormat;
+import model.Item;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Test class for Item.
+ * @author Jasmine Dacones
+ * @version 4/11/16
+ */
+public class ItemTest {
+    
+    /** Item object name. */
+    private Item myItem;
+//    
+    /** Item object 2 name. */
+    private Item myItem2;
+    
+    /** Item object 3 name. */
+    private Item myItem3;
+
+//    /** New BigDecimal. */
+//    private BigDecimal myBd;
+    
+    /**
+     * Creates an Item object for the test methods.
+     */
+    @Before
+    public void setUp() {
+        myItem = new Item("Silly Putty", BigDecimal.valueOf(4.41));
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, 
+                           BigDecimal.valueOf(10.04));
+    }
+    
+    /**
+     * Test method for an Item with a null Item name.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullName() {
+        myItem = new Item(null, BigDecimal.valueOf(4.41));
+    }
+    /**
+     * Test method for an Item with a negative price.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativePrice() {
+        myItem = new Item("Silly Putty", BigDecimal.valueOf(-4.41));
+    }
+    
+    /**
+     * Test method for an Item with a null price.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullPrice() {
+        myItem = new Item("Silly Putty", null);
+    }
+    
+    /**
+     * Test method for an Item with a negative bulk price.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeBulkPrice() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, 
+                           BigDecimal.valueOf(-10.04));
+    }
+    
+    /**
+     * Test method for an Item with a null bulk price.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullBulkPrice() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, null);
+    }
+    
+    /**
+     * Test method for an Item with a negative bulk quantity.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeBulkQuantity() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 
+                           6, BigDecimal.valueOf(-10.04));
+    }
+                    
+    /**
+     * Test method for calculating the total price of the items.
+     */
+    @Test
+    public void testCalculateItemTotal() {
+        assertEquals(BigDecimal.valueOf(10.04), myItem2.calculateItemTotal(6));        
+    }
+    
+    /**
+     * Test method for checking if the item is bulk.
+     */
+    @Test
+    public void testIsBulk() {
+        assertEquals(false, myItem.isBulk());
+        assertEquals(true, myItem2.isBulk());
+    }
+    
+    /**
+     * Test method for the String representation 
+     * of an Item object.
+     */
+    @Test
+    public void testToString() {
+        assertEquals("Silly Putty, $4.41", myItem.toString());
+        assertEquals("Silly Putty, $4.41 (6 for $10.04)", myItem2.toString());
+    }
+    
+    /**
+     * Test method for the state equality between two objects.
+     */
+    @Test
+    public void testEqualsObject() {
+        assertEquals(true, myItem.equals(myItem));
+        assertEquals(false, myItem.equals(myItem2));
+        assertEquals(true, myItem2.equals(myItem2));
+    }
+    
+    /**
+     * Tests the.
+     */
+    @Test
+    public void testHashCode() {
+        fail("Not yet implemented");
+    }
+}

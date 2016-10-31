@@ -1,0 +1,103 @@
+// Finish and comment me!
+
+/*
+ * Resources
+ * http://programmers.stackexchange.com/questions/284215/how-do-you-avoid-getters-and-setters
+ * 
+ */
+
+package model;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+/**
+ * Class that stores the information about the customer's overall purchase.
+ * @author Jasmine Dacones
+ * @version 4/10/16
+ */
+public class ShoppingCart {
+    
+    /** ArrayList that holds all items to be purchased. */
+    private ArrayList<ItemOrder> myCartItems;
+    
+    /** Total cost of items in shopping cart. */
+    private BigDecimal myTotalCost;
+    
+    /** Customer's membership status. */
+    private boolean myMembership;
+    
+    /** Discount percentage. */
+    private final double myDISCOUNT = 0.10;
+    
+    
+    /**
+     * Initializes an empty shopping cart.
+     */
+    public ShoppingCart() {
+        myCartItems = new ArrayList<ItemOrder>();
+    }
+
+    /**
+     * Adds an order to the shopping cart.
+     * @param theOrder Item order.
+     */
+    public void add(final ItemOrder theOrder) {
+        for (int i = 0; i < myCartItems.size(); i++) {
+            if (myCartItems.get(i).equals(theOrder)) {
+                myCartItems.set(i, theOrder);
+            } else {
+                myCartItems.add(theOrder); 
+            }
+        }           
+    }
+
+    /**
+     * Sets whether or not the customer for this shopping cart has a store membership. 
+     * @param theMembership customer's membership status.
+     */
+    public void setMembership(final boolean theMembership) {
+        myMembership = theMembership;   
+    }
+
+    /**
+     * Returns the total cost of items in the shopping cart.
+     * @return the total cost of items in the shopping cart.
+     */
+    public BigDecimal calculateTotal() {       
+        for (ItemOrder item : myCartItems) {
+            if (myMembership && item.getItem().isBulk()) {
+//                myTotalCost += item.getItem().myTotalItemOrder * myDISCOUNT;
+                myTotalCost = myTotalCost.add(item.calculateOrderTotal().
+                multiply(BigDecimal.valueOf(myDISCOUNT)));
+            } else {
+                myTotalCost = myTotalCost.add(item.calculateOrderTotal());
+//                myTotalCost += item.getItem().myTotalItemOrder;
+            }
+        }
+        // can't do this in calculations
+        // return myTotalCost.setScale(2).ROUND_HALF_EVEN;
+        return myTotalCost;
+    }
+    
+    /**
+     * Removes all items from the shopping cart.
+     */
+    public void clear() {
+        myCartItems.clear();  
+        myTotalCost = BigDecimal.ZERO;
+    }
+    
+    /**
+     * Overrides the String representation of items in the cart.
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for (ItemOrder item : myCartItems) {
+            sb.append(item);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+}

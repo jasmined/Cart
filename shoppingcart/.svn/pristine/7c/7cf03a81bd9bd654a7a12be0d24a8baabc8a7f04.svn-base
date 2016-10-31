@@ -1,0 +1,157 @@
+// Finish and comment me!
+
+/*
+ * Resources
+ * Overriding equals and hashcode methods
+ * http://javapapers.com/core-java/hashcode-and-equals-methods-override/
+ */
+
+package model;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
+
+/**
+ * Class that stores the information of purchased items.
+ * @author Jasmine Dacones
+ * @version 4/10/16
+ */
+public final class Item {
+    
+    /** Name of the item. */
+    private final String myName;
+        
+    /** Price of the item. */
+    private BigDecimal myPrice;
+    
+    /** Bulk quantity of an item. */
+    private int myBulkQuantity;
+    
+    /** Price of an item bought in bulk. */
+    private BigDecimal myBulkPrice;
+    
+    /** Price formatting. */
+    private NumberFormat myNf = NumberFormat.getCurrencyInstance(Locale.US);
+    
+    /**
+     * Initializes a single Item object.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     */
+    public Item(final String theName, final BigDecimal thePrice) {
+        this(theName, thePrice, 0, BigDecimal.ZERO);
+//        if (thePrice < BigDecimal.ZERO) {
+//            throw IllegalArgumentException("Price cannot be under 0.";)
+//        }
+//        if (theName == null) {
+//            throw NullPointerException("Item name cannot be empty.");
+//        }
+//        
+//        myName = theName;
+//        myPrice = myNf.format(thePrice);        
+    }
+    
+
+    /**
+     * Initalizes an Item object bought in a bulk.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     * @param theBulkQuantity number of items bought in a bulk
+     * @param theBulkPrice price of an item bought in bulk
+     */
+    public Item(final String theName, final BigDecimal thePrice, final int theBulkQuantity,
+                final BigDecimal theBulkPrice) {
+        
+        if (theName == null) {
+            throw new IllegalArgumentException("Item name cannot be empty.");
+        }
+        if (theBulkQuantity < 0) {
+            throw new IllegalArgumentException("Bulk cannot be negative.");
+        }
+//        if ((thePrice < BigDecimal.ZERO) || (theBulkPrice < BigDecimal.ZERO)) {
+//            throw new IllegalArgumentException("Price cannot be negative");
+//        }
+        
+ 
+        myName = theName;
+//        myPrice = myNf.format(new BigDecimal(thePrice));
+        myPrice = thePrice.setScale(2);
+        myBulkQuantity = theBulkQuantity;
+//        myBulkPrice = myNf.format(theBulkPrice);
+        myBulkPrice = theBulkPrice.setScale(2);
+        
+        
+    }
+    
+//    public String getName() {
+//        return myName;
+//    }
+//    
+//    public BigDecimal getPrice() {
+//        return myPrice;
+//    }
+    
+
+    /**
+     * Calculates the total price of the specified item.
+     * @param theQuantity the number of items bought
+     * @return the total price of the item.
+     */
+    public BigDecimal calculateItemTotal(final int theQuantity) {
+        if (myBulkQuantity < 0) {
+            throw new IllegalArgumentException();
+        } else {
+            final int remainderQuantity = theQuantity % myBulkQuantity;
+            final BigDecimal bulkTotal = new BigDecimal(myBulkQuantity - remainderQuantity).
+                            multiply(myBulkPrice);
+            final BigDecimal remainderTotal = new BigDecimal(remainderQuantity).
+                            multiply(myPrice);
+            final BigDecimal totalCost = bulkTotal.add(remainderTotal);
+            return totalCost;
+        }
+    }
+        
+    /**
+     * Determines if the item has bulk pricing or not.
+     * @return True if the Item has bulk pricing; false otherwise 
+     */
+    public boolean isBulk() {
+        if (myBulkQuantity > 0) {
+            return true;           
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(myName + ", " + myNf.format(myPrice));
+        if (this.isBulk()) {
+            sb.append(" (" + myBulkQuantity + " for " + myNf.format(myBulkPrice) + ")");
+        }
+        return sb.toString();
+    }
+
+    
+    /**
+     * Tests if two Items are equal.
+     */
+    @Override
+    public boolean equals(final Object theOther) {
+        if (theOther instanceof Item) {
+            final Item other = (Item) theOther;
+            return (myName == other.myName) && (myPrice 
+                            == other.myPrice) && (myBulkQuantity 
+                            == other.myBulkQuantity) && (myBulkPrice 
+                            == other.myBulkPrice);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+}

@@ -1,0 +1,139 @@
+// Finish and comment me!
+
+/*
+ * Resources
+ * Overriding equals and hashcode methods
+ * http://javapapers.com/core-java/hashcode-and-equals-methods-override/
+ */
+
+package model;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+
+/**
+ * Class that stores the information of purchased items.
+ * @author Jasmine D
+ * @version 4/10/16
+ */
+public final class Item {
+    
+    /** Name of the item. */
+    private final String myName;
+    
+//    /** BigDecimal initialized. */
+//    private final BigDecimal myBd;
+    
+    /** Price of the item. */
+    private BigDecimal myPrice;
+    
+    /** Bulk quantity of an item. */
+    private int myBulkQuantity;
+    
+    
+    /** Price of an item bought in bulk. */
+    private BigDecimal myBulkPrice = 0;
+    
+    /** Number formatting. */
+    private NumberFormat myPriceFormat = NumberFormat.getCurrencyInstance();
+    
+    /**
+     * Initializes a single Item object.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     */
+    public Item(final String theName, final BigDecimal thePrice) {
+        myName = theName;
+        myPrice = myPriceFormat(thePrice);
+    }
+    
+
+    /**
+     * Initalizes an Item object bought in a bulk.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     * @param theBulkQuantity number of items bought in a bulk
+     * @param theBulkPrice price of an item bought in bulk
+     */
+    public Item(final String theName, final BigDecimal thePrice, final int theBulkQuantity,
+                final BigDecimal theBulkPrice) {
+        myName = theName;
+        myPrice = new BigDecimal(thePrice);
+        myBulkQuantity = theBulkQuantity;
+        myBulkPrice = theBulkPrice;
+
+    }
+    
+//    public String getName() {
+//        return myName;
+//    }
+//    
+//    public BigDecimal getPrice() {
+//        return myPrice;
+//    }
+    
+
+    /**
+     * Calculates the total price of the specified item.
+     * @param theQuantity the number of items bought
+     * @return the total price of the item.
+     */
+    public BigDecimal calculateItemTotal(final int theQuantity) {
+        if (myQuantity < 0) {
+            throw new IllegalArgumentException();
+            final int remainder = myQuantity  % myBulkQuantity;
+            final double total  = (myBulkPrice * ((myQuantity - remainder) 
+                            / bulkQuantity)) + (remainder * price);
+            return total;
+        }
+        
+    }
+//    
+    /**
+     * Determines if the item has bulk pricing or not.
+     * @return True if the Item has bulk pricing; false otherwise 
+     */
+    public boolean isBulk() {
+        if (myBulkQuantity > 0) {
+            return true;           
+        }
+        return false;
+    }
+//
+//    @Override
+//    public String toString() {
+//        final String itemStatement = myName + ", " + myPrice;
+//        if (Item.isBulk()) {
+//            items += " (" + theQuantity + " for " + myBulkPrice + ")";
+//        }
+//        return itemStatement;
+//    }
+//
+//
+//    @Override
+//    public boolean equals(final Object theOther) {
+//        if (theOther instanceof Item) {
+//            return true;
+//        }
+//    }
+    
+    @Override
+    public boolean equals(final Object theOther) {
+        if (theOther instanceof Item) {
+            final Item other = (Item) theOther;
+            return (myName == other.myName) && (myPrice 
+                            == other.myPrice) && (myBulkQuantity 
+                            == other.myBulkQuantity) && (myBulkPrice 
+                            == other.myBulkPrice);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        
+        return 0;
+    }
+//
+}

@@ -1,0 +1,257 @@
+package tests;
+
+import static org.junit.Assert.*;
+
+import com.sun.javafx.scene.paint.GradientUtils.Point;
+
+import java.math.BigDecimal;
+import model.Item;
+
+import org.junit.Before;
+import org.junit.Test;
+
+
+
+/**
+ * Test class for Item.
+ * @author Jasmine Dacones
+ * @version 4/11/16
+ */
+public class ItemTest {
+    
+    /** Item object name. */
+    private Item myItem;
+//    
+    /** Item object 2 name. */
+    private Item myItem2;
+    
+    /** Item object 3 name. */
+    private Item myItem3;
+    
+    /** Item object 4 name. */
+    private Item myItem4;
+    
+    /** Item object 5 name. */
+    private Item myItem5;
+    
+    /** Item object 6 name. */
+    private Item myItem6;
+    
+    /** Item object 7 name. */
+    private Item myItem7;
+    
+    /** Item object 8 name. */
+    private Item myItem8;
+    
+    /** Item object 9 name. */
+    private Item myItem9;
+    
+    /** Item object 10 name. */
+    private Item myItem10;
+    
+    /** Item object 11 name. */
+    private Item myItem11;
+    
+    /** Item object 12 name. */
+    private Item myItem12;
+    
+    /** Item object 11 name. */
+    private Item myItem13;
+    
+    /** ItemOrder object. */
+    private Point myPoint;
+
+//    /** New BigDecimal. */
+//    private BigDecimal myBd;
+    
+    /**
+     * Creates an Item object for the test methods.
+     */
+    @Before
+    public void setUp() {
+        myItem = new Item("Silly Putty", BigDecimal.valueOf(4.41));
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, 
+                           BigDecimal.valueOf(10.04));
+        myItem3 = new Item("Computer science pen", BigDecimal.valueOf(2.00));
+        myItem4 = new Item("'Java Rules!' button", BigDecimal.valueOf(4.41), 10, 
+                           BigDecimal.valueOf(10.04));
+        myItem5 = new Item("Silly Putty", BigDecimal.valueOf(5.41));
+        myItem6 = new Item("'Java Rules!' button", BigDecimal.valueOf(4.41), 5, 
+                           BigDecimal.valueOf(10.04));
+        myItem7 = new Item("Computer science pen", BigDecimal.valueOf(4.41));
+        myItem8 = new Item("'Java Rules!' button", BigDecimal.valueOf(4.41), 5, 
+                           BigDecimal.valueOf(20.04));
+        myItem9 = new Item("'Java Rules!' button", BigDecimal.valueOf(14.41), 5, 
+                           BigDecimal.valueOf(10.04));
+        myItem10 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 10, 
+                           BigDecimal.valueOf(10.04));
+        myItem11 = new Item("Computer science pen", BigDecimal.valueOf(4.41), 10, 
+                           BigDecimal.valueOf(10.04));
+        myItem12 = new Item("Computer science pen", BigDecimal.valueOf(14.41), 16, 
+                           BigDecimal.valueOf(10.04));
+        myItem13 = new Item("Silly Putty", BigDecimal.valueOf(24.41), 16, 
+                                       BigDecimal.valueOf(20.04));
+    }
+    
+    /**
+     * Test method for an Item with a null Item name.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullName() {
+        myItem = new Item(null, BigDecimal.valueOf(4.41));
+    }
+    
+    /**
+     * Test method for an Item with an empty Item name.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyStringName() {
+        myItem = new Item("", BigDecimal.valueOf(4.41));
+    }
+    /**
+     * Test method for an Item with a negative price.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativePrice() {
+        myItem = new Item("Silly Putty", BigDecimal.valueOf(-4.41));
+    }
+    
+    /**
+     * Test method for an Item with a null price.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullPrice() {
+        myItem = new Item("Silly Putty", null);
+    }
+    
+    /**
+     * Test method for an Item with a negative bulk price.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeBulkPrice() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, 
+                           BigDecimal.valueOf(-10.04));
+    }
+    
+    /**
+     * Test method for an Item with a null bulk price.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testNullBulkPrice() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 6, null);
+    }
+    
+    /**
+     * Test method for an Item with a negative bulk quantity.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeBulkQuantity() {
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(4.41), 
+                           -6, BigDecimal.valueOf(10.04));
+    }
+                    
+    /**
+     * Test method for calculating the total price of bulk items.
+     * First assertEquals() tests a bulk item with a quantity over
+     * the bulk quantity.
+     * Second assertEquals() test a bulk item with a quantity under
+     * the bulk quantity.
+     */
+    @Test
+    public void testCalculateItemTotalBulk() {
+        assertEquals(BigDecimal.valueOf(10.04), myItem2.calculateItemTotal(6));  
+        assertEquals(BigDecimal.valueOf(8.82), myItem2.calculateItemTotal(2));
+         
+    }
+    
+    /**
+     * Test method for calculating the total of a non-bulk item.
+     */
+    @Test
+    public void testCalculateItemTotalNonBulk() {
+        assertEquals(BigDecimal.valueOf(4.00), myItem3.calculateItemTotal(2));   
+    }
+
+    
+    /**
+     * Test method for checking if the item is bulk.
+     */
+    @Test
+    public void testIsBulk() {
+        assertEquals(false, myItem.isBulk());
+        assertEquals(true, myItem2.isBulk());
+    }
+    
+    /**
+     * Test method for the String representation 
+     * of an Item object.
+     */
+    @Test
+    public void testToString() {
+        assertEquals("Silly Putty, $4.41", myItem.toString());
+        assertEquals("Silly Putty, $4.41 (6 for $10.04)", myItem2.toString());
+    }
+    
+    /**
+     * Test method for the state equality between two objects
+     * of the same type.
+     * 1: non-bulk items with all the same parameters
+     * 2: bulk and non-bulk items
+     * 3: bulk items with all the same parameters
+     * 4: two different non-bulk items
+     * 5: two different bulk items
+     * 6: same non-bulk items but different prices
+     * 7: same bulk items but different bulk quantity
+     * 8: non-bulk items - different name, same price
+     * 9: same bulk items but different bulk prices
+     * 10: same bulk items but different prices
+     * 11: same bulk parameters but different names
+     * 12: all different bulk parameters except bulk price
+     * 13: all different bulk parameters except bulk quantity
+     */
+    @Test
+    public void testEqualsObject() {       
+        assertEquals(true, myItem.equals(myItem));      // 1
+        assertEquals(false, myItem.equals(myItem2));    // 2
+        assertEquals(true, myItem2.equals(myItem2));    // 3
+        assertEquals(false, myItem.equals(myItem3));    // 4
+        assertEquals(false, myItem2.equals(myItem4));   // 5
+        assertEquals(false, myItem.equals(myItem5));    // 6
+        assertEquals(false, myItem4.equals(myItem6));   // 7
+        assertEquals(false, myItem.equals(myItem7));    // 8
+        assertEquals(false, myItem6.equals(myItem8));   // 9
+        assertEquals(false, myItem6.equals(myItem9));   // 10
+        assertEquals(false, myItem4.equals(myItem10));  // 11
+        assertEquals(false, myItem4.equals(myItem12));  // 12       
+    }
+    
+    /**
+     * Test method for the state equality between two different object types.
+     */
+    @Test
+    public void testEqualsObjectDiffObject() {
+        myPoint = new Point();
+        assertEquals(false, myItem.equals(myPoint));
+    }
+    
+    /**
+     * Test method for the state equality between an object and a null.
+     */
+    @Test
+    public void testEqualsObjectWithNull() {
+        assertEquals(false, myItem.equals(null));
+    }
+       
+    
+    /**
+     * Tests the hash code equality between two objects.
+     */
+    @Test
+    public void testHashCode() {
+        myItem = new Item("Silly Putty", BigDecimal.valueOf(4.41));
+        myItem2 = new Item("Silly Putty", BigDecimal.valueOf(5.41), 6, 
+                           BigDecimal.valueOf(11.04));
+        assertEquals(false, myItem.hashCode() == myItem2.hashCode());
+       
+    }
+}

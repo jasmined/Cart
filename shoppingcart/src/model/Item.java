@@ -1,0 +1,157 @@
+/*
+ * Information about an individual item.
+ * Associated with ItemOrder and Shopping Cart.
+ */
+
+package model;
+
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Objects;
+
+/**
+ * Class that stores the information of items.
+ * @author Jasmine Dacones
+ * @version 4/10/16
+ */
+public final class Item {  
+    
+    /** Name of the item. */
+    private final String myName;
+            
+    /** Price of the item. */
+    private BigDecimal myPrice;
+    
+    /** Bulk quantity of an item. */
+    private int myBulkQuantity;
+    
+    /** Price of an item bought in bulk. */
+    private BigDecimal myBulkPrice;
+        
+    /** Price formatting. */
+    private NumberFormat myNf = NumberFormat.getCurrencyInstance(Locale.US);
+    
+    /**
+     * Initializes a single Item object.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     */
+    public Item(final String theName, final BigDecimal thePrice) {         
+        
+        if (theName.length() <= 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        if (thePrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price cannot be under 0.");
+        }
+        
+        myName = Objects.requireNonNull(theName);
+        myPrice = Objects.requireNonNull(thePrice);        
+    }
+    
+
+    /**
+     * Initializes an Item object bought in a bulk.
+     * @param theName name of the item
+     * @param thePrice price of the item
+     * @param theBulkQuantity number of items bought in a bulk
+     * @param theBulkPrice price of an item bought in bulk
+     * @throws Exception 
+     */
+    public Item(final String theName, final BigDecimal thePrice, final int theBulkQuantity,
+                final BigDecimal theBulkPrice) {     
+        
+        this(theName, thePrice);
+        
+        if (theBulkPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        if (theBulkQuantity <= 0) {
+            throw new IllegalArgumentException();
+        }
+         
+        myBulkQuantity = theBulkQuantity;
+        myBulkPrice = Objects.requireNonNull(theBulkPrice);       
+    }
+    
+    /**
+     * Calculates the total price of the specified item.
+     * @param theQuantity the number of items bought
+     * @return the total price of the item.
+     */
+    public BigDecimal calculateItemTotal(final int theQuantity) {
+        BigDecimal totalCost = BigDecimal.ZERO;
+        if (isBulk() && theQuantity >= myBulkQuantity) {
+            final int remainderQuantity = theQuantity % myBulkQuantity;
+            final BigDecimal bulkTotal = 
+                            new BigDecimal(theQuantity / myBulkQuantity).multiply(myBulkPrice);
+            final BigDecimal remainderTotal = 
+                            new BigDecimal(remainderQuantity).multiply(myPrice);            
+            totalCost = bulkTotal.add(remainderTotal);
+        } else {
+            totalCost = totalCost.add(myPrice.multiply(new BigDecimal(theQuantity)));
+        }
+        return totalCost;
+    }
+        
+    /**
+     * Determines if the item has bulk pricing or not.
+     * @return True if the Item has bulk pricing; false otherwise 
+     */
+    public boolean isBulk() {
+        boolean result = false;
+        if (myBulkQuantity > 0) {
+            result = true;           
+        }
+        return result;
+    }
+    
+    /**
+     * Overrides the String representation of the items in the store.
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(myName);
+        sb.append(", ");
+        sb.append(myNf.format(myPrice));
+        if (this.isBulk()) {
+            sb.append(" (" + myBulkQuantity + " for " + myNf.format(myBulkPrice) + ")");
+        }
+        return sb.toString();
+    }
+
+    
+    /**
+     * Tests if the state of two Items are equal.
+     */
+    @Override
+    public boolean equals(final Object theOther) {
+        final boolean result;
+        if (this == theOther) {
+            result = true;
+        } else if (theOther != null && this.getClass() == theOther.getClass()) {
+            final Item other = (Item) theOther;
+            
+            result = Objects.equals(myName, other.myName)
+                          && Objects.equals(myPrice, other.myPrice)
+                          && Objects.equals(myBulkQuantity, other.myBulkQuantity)
+                          && Objects.equals(myBulkPrice, other.myBulkPrice);
+        } else {
+            result = false;
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Overrides the default hash code into a more readable line.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(myName, myPrice, myBulkQuantity, myBulkPrice);
+    }
+}

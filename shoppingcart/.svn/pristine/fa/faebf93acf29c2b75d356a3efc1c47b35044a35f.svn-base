@@ -1,0 +1,109 @@
+// Finish and comment me!
+
+
+package model;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+
+/**
+ * Class that stores the information about the customer's overall purchase.
+ * @author Jasmine Dacones
+ * @version 4/10/16
+ */
+public class ShoppingCart {
+    
+    /** ArrayList that holds all items to be purchased. */
+    private Map<ItemOrder, Item> myCartItems;
+    
+    /** Total cost of items in shopping cart. */
+    private BigDecimal myTotalCost;
+    
+    /** Customer's membership status. */
+    private boolean myMembership;
+    
+    
+    /**
+     * Initializes an empty shopping cart.
+     */
+    public ShoppingCart() {
+        myCartItems = new HashMap<>();
+    }
+
+    /**
+     * Adds an order to the shopping cart.
+     * @param theOrder Item order.
+     */
+    public void add(final ItemOrder theOrder) {
+        if (theOrder == null) {
+            throw new NullPointerException();        
+        } else {
+            if (myCartItems.containsValue(theOrder.getItem())) {
+                for (ItemOrder item : myCartItems.keySet()) {
+                    if (item.getItem().equals(theOrder.getItem())) {
+                        myCartItems.remove(item);
+                        myCartItems.put(theOrder, theOrder.getItem());
+                        break;
+                    }
+                } 
+            } else {
+                myCartItems.put(theOrder, theOrder.getItem());
+            }
+            
+        }        
+    }
+
+    /**
+     * Sets whether or not the customer for this shopping cart has a store membership. 
+     * @param theMembership customer's membership status.
+     */
+    public void setMembership(final boolean theMembership) {
+        myMembership = theMembership;   
+    }
+
+    /**
+     * Returns the total cost of items in the shopping cart.
+     * @return the total cost of items in the shopping cart.
+     */
+    public BigDecimal calculateTotal() {       
+        myTotalCost = BigDecimal.ZERO;
+        final BigDecimal discount = new BigDecimal(".90");
+        
+        for (final ItemOrder item : myCartItems.keySet()) {
+            if (myMembership) {
+                if (item.getItem().isBulk()) {
+                    myTotalCost = myTotalCost.add(item.calculateOrderTotal());
+                } else {
+                    myTotalCost = myTotalCost.add(item.calculateOrderTotal().
+                                                  multiply(discount));
+                }
+            } else {
+                myTotalCost = myTotalCost.add(item.calculateOrderTotal());
+            }
+        }
+        return myTotalCost.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
+    
+    /**
+     * Removes all items from the shopping cart.
+     */
+    public void clear() {
+        myCartItems.clear();  
+        // myTotalCost = BigDecimal.ZERO;
+    }
+    
+    /**
+     * Overrides the String representation of items in the cart.
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for (ItemOrder item : myCartItems.keySet()) {
+            sb.append(myCartItems.get(item).toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+}
